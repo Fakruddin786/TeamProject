@@ -1,5 +1,5 @@
 // Team Task Management Application
-// Developer 2: Implementation of Task Creation Functionality
+// Developer 2 & Developer 3: Task Creation and Task Completion Functionality
 
 document.addEventListener("DOMContentLoaded", () => {
     const taskForm = document.getElementById("task-form");
@@ -10,10 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
     // In-memory state for tasks
     let tasks = [];
 
-    // Helper: Update task count badge
+    // Helper: Update task count badge with active vs completed statistics
     function updateCounter() {
-        const count = tasks.length;
-        taskCounter.textContent = `${count} ${count === 1 ? 'task' : 'tasks'}`;
+        const total = tasks.length;
+        const completed = tasks.filter(t => t.completed).length;
+        if (total === 0) {
+            taskCounter.textContent = "0 tasks";
+        } else {
+            taskCounter.textContent = `${completed}/${total} completed`;
+        }
     }
 
     // Render task items to DOM
@@ -34,6 +39,14 @@ document.addEventListener("DOMContentLoaded", () => {
             li.className = `task-item ${task.completed ? "completed" : ""}`;
             li.setAttribute("data-id", task.id);
 
+            // Completion checkbox (Developer 3)
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.className = "task-checkbox";
+            checkbox.checked = task.completed;
+            checkbox.setAttribute("aria-label", "Mark task completed");
+            checkbox.addEventListener("change", () => toggleTaskCompletion(task.id));
+
             const taskContent = document.createElement("div");
             taskContent.className = "task-content";
 
@@ -42,7 +55,27 @@ document.addEventListener("DOMContentLoaded", () => {
             titleSpan.textContent = task.text;
             taskContent.appendChild(titleSpan);
 
+            // Action buttons container
+            const actionsDiv = document.createElement("div");
+            actionsDiv.className = "task-actions";
+
+            // Status label badge
+            const statusBadge = document.createElement("span");
+            statusBadge.className = `status-pill ${task.completed ? "status-done" : "status-pending"}`;
+            statusBadge.textContent = task.completed ? "Done" : "Pending";
+            actionsDiv.appendChild(statusBadge);
+
+            // Delete button
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "btn-delete";
+            deleteBtn.innerHTML = "&times;";
+            deleteBtn.setAttribute("title", "Delete Task");
+            deleteBtn.addEventListener("click", () => deleteTask(task.id));
+            actionsDiv.appendChild(deleteBtn);
+
+            li.appendChild(checkbox);
             li.appendChild(taskContent);
+            li.appendChild(actionsDiv);
             taskList.appendChild(li);
         });
 
@@ -67,15 +100,34 @@ document.addEventListener("DOMContentLoaded", () => {
         taskInput.focus();
     }
 
+    // Task Completion Toggle Handler (Developer 3)
+    function toggleTaskCompletion(taskId) {
+        tasks = tasks.map((task) => {
+            if (task.id === taskId) {
+                return { ...task, completed: !task.completed };
+            }
+            return task;
+        });
+        renderTasks();
+    }
+
+    // Task Deletion Handler
+    function deleteTask(taskId) {
+        tasks = tasks.filter(task => task.id !== taskId);
+        renderTasks();
+    }
+
     taskForm.addEventListener("submit", (e) => {
         e.preventDefault();
         addTask(taskInput.value);
     });
 
-    // Make tasks array and render function accessible globally for subsequent feature modules
+    // Global exposure for testing or extensions
     window.taskApp = {
         getTasks: () => tasks,
         setTasks: (newTasks) => { tasks = newTasks; renderTasks(); },
+        addTask: addTask,
+        toggleTaskCompletion: toggleTaskCompletion,
         renderTasks: renderTasks
     };
 });
