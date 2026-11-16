@@ -14,8 +14,33 @@
         </header>
 
         <main>
-            <!-- Task UI will be populated here -->
-            <div id="app"></div>
+            <div class="card">
+                <!-- Task Input Section (Assigned: Developer 1) -->
+                <form id="task-form" class="task-form">
+                    <input 
+                        type="text" 
+                        id="task-input" 
+                        class="task-input" 
+                        placeholder="What needs to be done? Enter a task..." 
+                        autocomplete="off"
+                        required
+                    />
+                    <button type="submit" id="add-task-btn" class="btn btn-primary">
+                        <span>+</span> Add Task
+                    </button>
+                </form>
+
+                <!-- Task List Section -->
+                <div class="task-list-header">
+                    <h2>Tasks List</h2>
+                    <span id="task-counter" class="badge">0 tasks</span>
+                </div>
+
+                <ul id="task-list" class="task-list">
+                    <!-- Dynamic task items will be rendered here -->
+                    <li class="empty-state">No tasks available. Add one above!</li>
+                </ul>
+            </div>
         </main>
 
         <footer>
