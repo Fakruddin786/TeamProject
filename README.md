@@ -6,7 +6,7 @@ A lightweight, collaborative task tracking web application built to demonstrate 
 TeamProject is a clean and intuitive task management application designed for agile teams. It serves as a practical demonstration of source control management, team collaboration workflows, and modern DevOps practices using Git.
 
 ## Project Description & Architecture
-Updated on main branch: The application follows a modular vanilla frontend architecture with strict separation of concerns across HTML5, CSS3, and JavaScript components. Main branch contains stable and reviewed production-ready code.
+The application follows a modular vanilla frontend architecture with strict separation of concerns across HTML5, CSS3, and JavaScript components. Main branch contains stable, reviewed production-ready code with an enhanced task workflow model featuring interactive status toggling, complete/pending counters, dynamic DOM state management, and real-time task lifecycle handling.
 
 ## Features
 - **Task Management Interface**: Clean and responsive user interface for managing daily tasks.
